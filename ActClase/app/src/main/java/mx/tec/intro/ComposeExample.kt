@@ -41,8 +41,8 @@ class ComposeExample : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Greeting("Android")
-                    //ListExample()
-                    PuppyInput()
+                    ListExample()
+                    //PuppyInput()
                 }
             }
         }
@@ -163,7 +163,7 @@ class ComposeExample : ComponentActivity() {
     // on composable functions you return Unit
     // fun ListRow() : unit
     // Unit in kotlin work as void in other languages
-    // when not specifying a return type a "Unit" tyoe is inferred
+    // when not specifying a return type a "Unit" type is inferred
     @Composable
     fun ListRow(id : Int, text : String){
         Row{
@@ -196,8 +196,8 @@ class ComposeExample : ComponentActivity() {
     fun GreetingPreview() {
         IntroTheme {
             //Greeting("Android")
-            //ListExample()
-            PuppyInput()
+            ListExample()
+            //PuppyInput()
         }
     }
 }
