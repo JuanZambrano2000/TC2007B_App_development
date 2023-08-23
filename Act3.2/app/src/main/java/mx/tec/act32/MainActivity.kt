@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     fun loadHobbiesActivity(view : View?) {
         //when we change activities we request the creation of a new activity
         //to do so we create an intent object
-        val intent = Intent(this, FriendsActivity::class.java)
+        val intent = Intent(this, HobbiesActivity::class.java)
         startActivity(intent)
     }
 }

@@ -49,6 +49,7 @@ class FriendsActivity : ComponentActivity() {
     fun ListOfFriends(){
         LazyColumn{
             item{
+                Text (text = "All images were generated using DALLE ")
                 Row(id = R.drawable.john_doe, name = "John Doe", countryOfOrigin = "USA")
                 Row(id = R.drawable.juan_perez, name = "Juan Perez", countryOfOrigin = "Mexico")
                 Row(id = R.drawable.jan_jansen, name = "Jean Dupont", countryOfOrigin = "France")
