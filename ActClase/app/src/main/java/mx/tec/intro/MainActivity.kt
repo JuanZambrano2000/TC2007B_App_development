@@ -1,5 +1,6 @@
 package mx.tec.intro
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 
 // : = extends
 // fun = function
@@ -18,6 +21,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nameEditText : EditText //I promise class that I will initialize later
     private lateinit var helloButton : Button
     private lateinit var goodbyeButton : Button
+
+    // how to catch values being sent back from an activity we opened from here
+    // we have to specify the launcher
+    // the same in jetpack compose
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if(result.resultCode == Activity.RESULT_OK){
+
+            // retrieve info and do something with it
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -121,6 +134,12 @@ class MainActivity : AppCompatActivity() {
         //when we change activities we request the creation of a new activity
         //to do so we create an intent object
         val intent = Intent(this, FirebaseActivity::class.java)
+
+        // NEW STUFF - HOW TO SEND DATA TO A NEW ACTIVITY (AND RECEIVE DATA BACK, LATER)
+
+        // to send info add it into the intent
+        intent.putExtra("name", "Juan")
+        intent.putExtra("age", 20)
         startActivity(intent)
     }
 }

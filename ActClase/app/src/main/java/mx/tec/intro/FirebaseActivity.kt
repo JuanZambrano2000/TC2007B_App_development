@@ -2,6 +2,8 @@ package mx.tec.intro
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -27,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class FirebaseActivity : ComponentActivity() {
@@ -45,6 +48,26 @@ class FirebaseActivity : ComponentActivity() {
             }
         }
         auth = Firebase.auth
+        // ANOTHER WAY TO GET UPDATES - SUBSCRIBE TO REAL TIME UPDATES
+        // FOR EXAMPLE A CHAT APP MAY NEED THEM
+
+        val db = Firebase.firestore
+        db.collection("animals")
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    Log.e("FIREBASE-TEST", "exception: ${exception.message}")
+                    // qualified return
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    for (document in snapshot) {
+                        Log.d("FIREBASE-TEST", "${document.id} - ${document.data}")
+                    }
+                }
+            }
+        // How to receive data from the opening activity
+        Toast.makeText(this, intent.getStringExtra("name"), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, intent.getIntExtra("age", 0), Toast.LENGTH_SHORT).show()
     }
 
     public override fun onStart() {
@@ -85,7 +108,18 @@ fun FirebaseExample(activity: Activity? = null, auth : FirebaseAuth? = null){
         )
         Button(
             onClick = {
-
+                if(activity != null){
+                    auth?.signInWithEmailAndPassword(login, password)
+                        ?.addOnCompleteListener(activity){task->
+                            if(task.isSuccessful){
+                                // expecting a context but sending an activity
+                                // Works through polymorphism
+                                Toast.makeText(activity, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show()
+                            }else {
+                                Toast.makeText(activity, "LOGIN FAILED: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                }
             }
         ) {
             Text("Login")
@@ -100,9 +134,11 @@ fun FirebaseExample(activity: Activity? = null, auth : FirebaseAuth? = null){
                         ?.addOnCompleteListener(activity){task ->
                             //the task was done
                             if(task.isSuccessful){
-
+                                // expecting a context but sending an activity
+                                // Works through polymorphism
+                               Toast.makeText(activity, "SIGN UP SUCCESSFUL", Toast.LENGTH_SHORT).show()
                             }else {
-                                
+                                Toast.makeText(activity, "SIGN UP FAILED: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
 
@@ -111,6 +147,60 @@ fun FirebaseExample(activity: Activity? = null, auth : FirebaseAuth? = null){
         ) {
             Text("Sign Up")
         }
+
+        Button(
+            onClick = {
+                //get a reference to firestore
+                val db = Firebase.firestore
+                // Create a new animal
+                val doggy = hashMapOf(
+                    "name" to "Toby",
+                    "weight" to 10,
+                    "age" to 12
+                )
+
+                // add a new document to the database
+                db.collection("animals")
+                    .add(doggy)
+                    .addOnSuccessListener { newDocument ->
+                        Toast.makeText(activity, "NEW DOC: ${newDocument.id}", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {  exception ->
+                        Toast.makeText(activity, "AN ERROR OCCURED: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        ){
+            Text("ADD RECORD")
+        }
+
+        Button(
+            onClick = {
+                val db = Firebase.firestore
+                if(activity!=null){
+                    db.collection("animals")
+                        .get()
+                        .addOnSuccessListener { snapshot ->
+                            // simple example - iterate through snapshot
+                            // a collection's snapshot contains several documents
+                            // we can iterate throught
+                            // foreach
+                            for(document in snapshot) {
+                                Log.d("FIREBASE-TEST", "${document.id} - ${document.data}")
+                            }
+
+                        }
+                        .addOnFailureListener { exception->
+                            Log.e("FIREBASE-TEST", "${exception.message}")
+                        }
+                }
+
+            }
+        ){
+            Text("QUERY DB")
+        }
+
+
+
     }
 }
 @Preview(showBackground = true)
