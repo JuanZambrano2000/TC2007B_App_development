@@ -5,7 +5,8 @@ plugins {
 
 android {
     namespace = "mx.tec.navigation"
-    compileSdk = 33
+    //change sdk from 33 to 34
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "mx.tec.navigation"
