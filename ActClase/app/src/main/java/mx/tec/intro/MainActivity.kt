@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         if(result.resultCode == Activity.RESULT_OK){
 
             // retrieve info and do something with it
+            val data = result.data
+
+            Toast.makeText(this, data?.getStringExtra("resultName"), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "${data?.getIntExtra("resultAge", 0)}", Toast.LENGTH_SHORT).show()
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +126,10 @@ class MainActivity : AppCompatActivity() {
         //when we change activities we request the creation of a new activity
         //to do so we create an intent object
         val intent = Intent(this, SecondActivity::class.java)
-        startActivity(intent)
+
+        // if we intend to receive a result we need to use the launcher
+        launcher.launch(intent)
+        //startActivity(intent)
     }
     fun composeActivity(view : View?) {
         //when we change activities we request the creation of a new activity
