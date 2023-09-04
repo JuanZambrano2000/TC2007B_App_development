@@ -1,5 +1,7 @@
 package mx.tec.navigation
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationExample()
+                    NavigationExample(this)
                 }
             }
         }
@@ -41,7 +43,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavigationExample(){
+fun NavigationExample(activity : Activity? = null){
     // this will be the main manager for our views
     // first we need to declare a controller
     // the controller is the object in charge of changing the views
@@ -88,6 +90,14 @@ fun NavigationExample(){
                         ?.savedStateHandle
                         ?.remove<String>("puppyName")
                 }
+                Button(
+                    onClick = {
+                        val intent = Intent(activity, ConstraintLayoutActivity::class.java)
+                        activity?.startActivity(intent)
+                    }
+                ) {
+                    Text("Constraint Layout Example")
+                }
             }
         }
         composable(
@@ -98,7 +108,6 @@ fun NavigationExample(){
             )
         ){backStackEntry ->
             // How to retrieve information from arguments
-            //
             KittenInterface(
                 goBack = {
                     navController
@@ -182,6 +191,7 @@ fun PuppyInterface(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun NavigationExamplePreview() {
