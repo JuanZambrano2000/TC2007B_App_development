@@ -11,12 +11,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import mx.tec.navigation.ui.theme.NavigationTheme
 
@@ -52,25 +55,65 @@ fun NavigationExample(){
     ){
         // within the navhost we are going to declare several composables to navigate
         // using the composable macro
-        composable("mainMenu"){
-            MainMenu(
-                kittenInterfaceButtonLogic = {
-                    navController.navigate("KittenInterface")
-                },
-                puppyInterfaceButtonLogic = {
-                    navController.navigate("PuppyInterface")
+        composable("mainMenu") {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+
+                MainMenu(
+                    kittenInterfaceButtonLogic = {
+                        navController.navigate("KittenInterface/Gris/75")
+                    },
+                    puppyInterfaceButtonLogic = {
+                        navController.navigate("PuppyInterface")
+                    }
+                )
+                // Retrieve value from the save state handle
+                // ?. - save call
+                // if object is null line is not run
+                val result = navController.currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.getLiveData<String>("puppyName")
+                    ?.observeAsState()
+                // let - scope function
+                // run code within a particular context
+                // let - in this case the definition af a variable / object
+                result?.value?.let { name ->
+                    Text("The puppy is called: $name")
+
+                    // once used you can clean up
+                    navController
+                        .currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.remove<String>("puppyName")
                 }
-            )
+            }
         }
-        composable("KittenInterface"){
+        composable(
+            "KittenInterface/{name}/{weight}",
+            arguments = listOf(
+                navArgument("name") {type = NavType.StringType},
+                navArgument("weight"){type = NavType.FloatType}
+            )
+        ){backStackEntry ->
+            // How to retrieve information from arguments
+            //
             KittenInterface(
                 goBack = {
+                    navController
+                        .previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("puppyName", "Buddy")
                     navController.popBackStack()
-                }
+                },
+                name = backStackEntry.arguments?.getString("name"),
+                weight = backStackEntry.arguments?.getFloat("weight")
             )}
         composable("PuppyInterface"){
             PuppyInterface(
                 goBack = {
+
                     navController.popBackStack()
                 }
         )}
@@ -102,7 +145,9 @@ fun MainMenu(
 
 @Composable
 fun KittenInterface(
-    goBack : () -> Unit
+    goBack : () -> Unit,
+    name : String? = "",
+    weight : Float? = 1.0f
 ) {
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
@@ -115,6 +160,8 @@ fun KittenInterface(
         ) {
             Text("Go back")
         }
+        Text("name: $name")
+        Text("weight: $weight")
     }
 }
 
