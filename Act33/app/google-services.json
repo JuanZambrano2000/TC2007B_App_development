@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "764682955264",
+    "project_id": "tec2023tc2007",
+    "storage_bucket": "tec2023tc2007.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764682955264:android:e3d7014973d183237f06e5",
+        "android_client_info": {
+          "package_name": "mx.tec.act33"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764682955264-gh7trnprceh83gi9be4fhccoi92at8qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1DtnyxyApUMdx9J9cOQ9RfhLHO1t_JmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764682955264-gh7trnprceh83gi9be4fhccoi92at8qm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764682955264:android:b02e043daf8ec3cb7f06e5",
+        "android_client_info": {
+          "package_name": "mx.tec.intro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764682955264-gh7trnprceh83gi9be4fhccoi92at8qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1DtnyxyApUMdx9J9cOQ9RfhLHO1t_JmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764682955264-gh7trnprceh83gi9be4fhccoi92at8qm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
