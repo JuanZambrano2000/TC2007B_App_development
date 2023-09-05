@@ -71,6 +71,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
+    implementation("com.google.firebase:firebase-auth-ktx")
+
     implementation("com.google.firebase:firebase-firestore-ktx:24.7.0")
 }
