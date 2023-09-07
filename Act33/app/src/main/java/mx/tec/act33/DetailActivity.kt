@@ -117,7 +117,7 @@ fun Form(activity: Activity? = null){
 @Composable
 fun Greeting2() {
     Text(
-        text = "Hello"
+        text = "Hello from detail activity"
     )
 }
 
