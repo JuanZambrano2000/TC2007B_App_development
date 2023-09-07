@@ -2,6 +2,7 @@ package mx.tec.act33
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -29,9 +30,7 @@ import mx.tec.act33.ui.theme.Act33Theme
 
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -46,85 +45,105 @@ class DetailActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Form(activity = this)
-                    Greeting2()
+                    Form(this)
+                    //Greeting2()
                 }
             }
         }
     }
-}
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Form(activity: Activity? = null){
-    var name by remember{
-        mutableStateOf("")
-    }
-    var age by remember {
-        mutableStateOf("")
-    }
-    var weight by remember {
-        mutableStateOf("")
-    }
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Image(
-            painter = painterResource(id = R.drawable.puppy_cat_placeholder),
-            contentDescription = "A happy guy in a chair",
-            modifier = Modifier.size(140.dp).padding(16.dp)
-        )
-        OutlinedTextField(
-            value = name,
-            onValueChange = {name = it},
-            label = {Text("Name")}
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = age,
-            onValueChange = { newAge ->
-                // Validate input to allow only numeric characters
-                val regex = Regex("[0-9]*")
-                if (regex.matches(newAge)) {
-                    age = newAge
-                }
-            },
-            label = { Text("Age") },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done // Adjust the imeAction as needed
-            ),
-            visualTransformation = VisualTransformation.None // Allows only numeric characters
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = weight,
-            onValueChange = {weight = it},
-            label = {Text("Weight")}
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = { 
-                val db = Firebase.firestore
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun Form(activity: Activity? = null){
+        var name by remember{ mutableStateOf("") }
+        var age by remember { mutableStateOf("") }
+        var weight by remember { mutableStateOf("") }
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.puppy_placeholder),
+                contentDescription = "A happy guy in a chair",
+                modifier = Modifier
+                    .size(140.dp)
+                    .padding(16.dp)
+            )
+            OutlinedTextField(
+                value = name,
+                onValueChange = {name = it},
+                label = {Text("Name")}
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                value = age,
+                onValueChange = { numericalAge ->
+                    // Validate input to allow only numeric characters
+                    val regex = Regex("[0-9]*")
+                    if (regex.matches(numericalAge)) {
+                        age = numericalAge
+                    }else{
+                        Toast.makeText(activity,"Input must be a number", Toast.LENGTH_LONG).show()
+                    }
+                },
+                label = { Text("Age") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                value = weight,
+                onValueChange = { numericalWeight ->
+                    // Validate input to allow only numeric characters
+                    val regex = Regex("[0-9]*")
+                    if (regex.matches(numericalWeight)) {
+                        weight = numericalWeight
+                    }else{
+                        Toast.makeText(activity,"Input must be a number", Toast.LENGTH_LONG).show()
+                    }
+                },
+                label = {Text("Weight")},
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
 
-            }) 
-        {
-            Text(text = "Submit")
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = {
+                    val ageInt = age.toIntOrNull()
+                    val weightDouble = age.toIntOrNull()
+                    if(ageInt != null && weightDouble != null){
+                        val animalData = hashMapOf(
+                            "name" to name,
+                            "age" to ageInt,
+                            "weight" to weightDouble
+                        )
+                        val db = Firebase.firestore
+                        db.collection("animals")
+                            .add(animalData)
+                            .addOnCompleteListener {task ->
+                                if(task.isSuccessful){
+                                    Toast.makeText(activity,"Success creating a new animal!", Toast.LENGTH_LONG).show()
+                                }else{
+                                    Toast.makeText(activity,"ERROR: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                    }else{
+                        Toast.makeText(activity,"Age and weight must be a numerical value", Toast.LENGTH_LONG).show()
+                    }
+
+                })
+            {
+                Text(text = "Submit")
+            }
+            Button(onClick = { finish() }) {
+                Text(text = "Go back")
+            }
         }
     }
-}*/
 
-@Composable
-fun Greeting2() {
-    Text(
-        text = "Hello from detail activity"
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview3() {
-    Act33Theme {
-        Greeting2()
+    @Preview(showBackground = true)
+    @Composable
+    fun GreetingPreview3() {
+        Act33Theme {
+            Form()
+        }
     }
 }
+

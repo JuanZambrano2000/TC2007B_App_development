@@ -3,22 +3,16 @@ package mx.tec.act33
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -99,25 +93,11 @@ class MenuActivity : ComponentActivity() {
                     nameEC = name,
                     bodyEC = "Age: $age, weight: $weight"
                 )
-                /*
-                Row {
-                    Text(text = name)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
-                        Toast.makeText(
-                            activity,
-                            "Age: $age, Weight: $weight",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }) {
-                        Text(text = "Show Details")
-                    }
-                }*/
             }
             Button(onClick = {
                 loadDetailActivity(this)
             }) {
-                Text(text = "Create a new animal")
+                Text(text = "Create a new record")
             }
         }
     }
@@ -158,7 +138,6 @@ class MenuActivity : ComponentActivity() {
     fun GreetingPreview2() {
         Act33Theme {
             LoadAnimals()
-            ExpandableCard(nameEC = "hola", bodyEC = "ff")
         }
     }
 }
