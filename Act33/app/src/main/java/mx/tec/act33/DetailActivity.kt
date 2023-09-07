@@ -1,12 +1,14 @@
 package mx.tec.act33
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -92,7 +94,7 @@ class DetailActivity : ComponentActivity() {
                 value = weight,
                 onValueChange = { numericalWeight ->
                     // Validate input to allow only numeric characters
-                    val regex = Regex("[0-9]*")
+                    val regex = Regex("[0-9.]*")
                     if (regex.matches(numericalWeight)) {
                         weight = numericalWeight
                     }else{
@@ -107,7 +109,7 @@ class DetailActivity : ComponentActivity() {
             Button(
                 onClick = {
                     val ageInt = age.toIntOrNull()
-                    val weightDouble = age.toIntOrNull()
+                    val weightDouble = age.toDoubleOrNull()
                     if(ageInt != null && weightDouble != null){
                         val animalData = hashMapOf(
                             "name" to name,
@@ -132,12 +134,19 @@ class DetailActivity : ComponentActivity() {
             {
                 Text(text = "Submit")
             }
-            Button(onClick = { finish() }) {
+            Button(onClick = {
+                loadMenuActivity(this)
+            }) {
                 Text(text = "Go back")
             }
         }
     }
 
+    private fun loadMenuActivity(view: ColumnScope){
+        finish()
+        val intent = Intent(this, MenuActivity::class.java)
+        startActivity(intent)
+    }
     @Preview(showBackground = true)
     @Composable
     fun GreetingPreview3() {

@@ -47,12 +47,13 @@ class MenuActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Greeting("Android")
                     LoadAnimals(this)
                 }
             }
         }
     }
+
+
     data class Animal(val name: String, val age: Long, val weight: Double)
 
     private suspend fun getAnimals(): List<Animal> {
@@ -67,7 +68,6 @@ class MenuActivity : ComponentActivity() {
         }
         return animals.toList()
     }
-
     @Composable
     fun LoadAnimals(activity: Activity? = null) {
         val animals = remember { mutableStateListOf<Animal>() }
@@ -103,6 +103,7 @@ class MenuActivity : ComponentActivity() {
     }
 
     private fun loadDetailActivity(view: ColumnScope){
+        finish()
         val intent = Intent(this, DetailActivity::class.java)
         startActivity(intent)
     }
